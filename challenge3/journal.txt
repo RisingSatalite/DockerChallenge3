@@ -1,0 +1,102 @@
+received assignment
+I see that there are multiple docker files
+
+I assume create multiple docker containers and then run them all
+
+Found out about docker-compose
+Like multiple dockers within a main docker
+adding docker-compose.yml file
+
+what does nginx do in this services
+
+
+inorder to run this, I use ports 8080 under option setting in docker desktop windows
+It does not run on port 3000, and it is suppose to run on port 8080 eithor way
+
+
+create .env
+at first I was not sure why it was needed but then I realise that mariadb and mysql would need it.
+
+Reworking init.sql to add the .env varibles
+
+
+not sure why 1 part of the docker file reference mysql when the db use mariadb
+I am receiving a database error
+
+running into server problems
+2024-04-16 21:59:04 Error connecting to database: Error: connect ECONNREFUSED 127.0.0.1:3306
+2024-04-16 21:59:04     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1605:16)
+2024-04-16 21:59:04     --------------------
+2024-04-16 21:59:04     at Protocol._enqueue (/app/node_modules/mysql/lib/protocol/Protocol.js:144:48)
+2024-04-16 21:59:04     at Protocol.handshake (/app/node_modules/mysql/lib/protocol/Protocol.js:51:23)
+2024-04-16 21:59:04     at PoolConnection.connect (/app/node_modules/mysql/lib/Connection.js:116:18)
+2024-04-16 21:59:04     at Pool.getConnection (/app/node_modules/mysql/lib/Pool.js:48:16)
+2024-04-16 21:59:04     at /app/server.js:69:10
+2024-04-16 21:59:04     at Layer.handle [as handle_request] (/app/node_modules/express/lib/router/layer.js:95:5)
+2024-04-16 21:59:04     at next (/app/node_modules/express/lib/router/route.js:149:13)
+2024-04-16 21:59:04     at Route.dispatch (/app/node_modules/express/lib/router/route.js:119:3)
+2024-04-16 21:59:04     at Layer.handle [as handle_request] (/app/node_modules/express/lib/router/layer.js:95:5)
+2024-04-16 21:59:04     at /app/node_modules/express/lib/router/index.js:284:15
+
+changed line 49 in server.js so that is print what the actual error is instead of just error occured
+console.error('Error reading file:', err);
+
+attempt to add mysql to connect to mariadb
+discarding that plan as mysql and mariadb are both databases, no need for mysql then if using mariadb
+
+change all reference of mysql to mariadb because you only need 1 database
+
+forgot a change to change in some file, fixing it all now
+
+forgot to add mariadb in package.json
+that cause an error stopping the docker image from running
+"mariadb":"3.3.0",
+
+
+yay new error
+2024-04-22 16:29:51 /app/node_modules/mariadb/lib/misc/errors.js:65
+2024-04-22 16:29:51   if (cause) return new SqlError(msg, sql, fatal, info, sqlState, errno, additionalStack, addHeader, { cause: cause });
+2024-04-22 16:29:51                     ^
+2024-04-22 16:29:51 
+2024-04-22 16:29:51 SqlError: (conn:-1, no: 45028, SQLState: HY000) retrieve connection from pool timeout after 10002ms
+2024-04-22 16:29:51     (pool connections: active=0 idle=0 limit=10)
+2024-04-22 16:29:51     at module.exports.createError (/app/node_modules/mariadb/lib/misc/errors.js:65:21)
+2024-04-22 16:29:51     at Pool._requestTimeoutHandler (/app/node_modules/mariadb/lib/pool.js:353:26)
+2024-04-22 16:29:51     at listOnTimeout (node:internal/timers:573:17)
+2024-04-22 16:29:51     at process.processTimers (node:internal/timers:514:7) {
+2024-04-22 16:29:51   sqlMessage: 'retrieve connection from pool timeout after 10002ms\n' +
+2024-04-22 16:29:51     '    (pool connections: active=0 idle=0 limit=10)',
+2024-04-22 16:29:51   sql: null,
+2024-04-22 16:29:51   fatal: false,
+2024-04-22 16:29:51   errno: 45028,
+2024-04-22 16:29:51   sqlState: 'HY000',
+2024-04-22 16:29:51   code: 'ER_GET_CONNECTION_TIMEOUT',
+2024-04-22 16:29:51   [cause]: Error: connect ECONNREFUSED 127.0.0.1:3306
+2024-04-22 16:29:51       at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1605:16)
+2024-04-22 16:29:51    From event:
+2024-04-22 16:29:51       at /app/node_modules/mariadb/lib/connection.js:141:13
+2024-04-22 16:29:51       at new Promise (<anonymous>)
+2024-04-22 16:29:51       at Connection.connect (/app/node_modules/mariadb/lib/connection.js:130:12)
+2024-04-22 16:29:51       at Pool._createConnection (/app/node_modules/mariadb/lib/pool.js:400:16)
+2024-04-22 16:29:51       at Pool._doCreateConnection (/app/node_modules/mariadb/lib/pool.js:42:10)
+2024-04-22 16:29:51       at listOnTimeout (node:internal/timers:573:17)
+2024-04-22 16:29:51       at process.processTimers (node:internal/timers:514:7) {
+2024-04-22 16:29:51     errno: -111,
+2024-04-22 16:29:51     code: 'ECONNREFUSED',
+2024-04-22 16:29:51     syscall: 'connect',
+2024-04-22 16:29:51     address: '127.0.0.1',
+2024-04-22 16:29:51     port: 3306,
+2024-04-22 16:29:37 Server running on port 3000
+2024-04-22 16:29:51     fatal: true,
+2024-04-22 16:29:51     sqlState: 'HY000'
+2024-04-22 16:29:51   }
+2024-04-22 16:29:51 }
+2024-04-22 16:29:51 
+2024-04-22 16:29:51 Node.js v21.7.3
+
+Adding port to the .env file
+
+I am looking thought the assignment again and it seem you were suppose to create multiple dockers as I original though, but when I use docker-compose it does not seem to do so.
+I will attempt to rebuild it incase I broke something
+
+I checked my environment varible and it seem to have not use the .env be default, added the correct varible there

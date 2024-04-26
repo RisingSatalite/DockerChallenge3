@@ -1,0 +1,54 @@
+remmeber do not change the name of db to mariadb unless you also change the folder to mariadb
+
+error cause by forgeting to change path varibles in each docker file, resolved
+
+successfully created 3 docker images with the changes, but not able to connect
+
+need to resolve error with db again, MARIADB_ROOT_PASSWORD
+2024-04-25 19:02:29 2024-04-26 01:02:29+00:00 [Warn] [Entrypoint]: /sys/fs/cgroup/name=systemd:/docker/78e8dcc3c33b51eb023b56a791b2438026e75e3be431a3f6083786fe505cbd51
+2024-04-25 19:02:29 28:misc:/docker/78e8dcc3c33b51eb023b56a791b2438026e75e3be431a3f6083786fe505cbd51
+2024-04-25 19:02:29 27:rdma:/docker/78e8dcc3c33b51eb023b56a791b2438026e75e3be431a3f6083786fe505cbd51
+2024-04-25 19:02:29 26:pids:/docker/78e8dcc3c33b51eb023b56a791b2438026e75e3be431a3f6083786fe505cbd51
+2024-04-25 19:02:29 25:hugetlb:/docker/78e8dcc3c33b51eb023b56a791b2438026e75e3be431a3f6083786fe505cbd51
+2024-04-25 19:02:29 24:net_prio:/docker/78e8dcc3c33b51eb023b56a791b2438026e75e3be431a3f6083786fe505cbd51
+2024-04-25 19:02:29 23:perf_event:/docker/78e8dcc3c33b51eb023b56a791b2438026e75e3be431a3f6083786fe505cbd51
+2024-04-25 19:02:29 22:net_cls:/docker/78e8dcc3c33b51eb023b56a791b2438026e75e3be431a3f6083786fe505cbd51
+2024-04-25 19:02:29 21:freezer:/docker/78e8dcc3c33b51eb023b56a791b2438026e75e3be431a3f6083786fe505cbd51
+2024-04-25 19:02:29 20:devices:/docker/78e8dcc3c33b51eb023b56a791b2438026e75e3be431a3f6083786fe505cbd51
+2024-04-25 19:02:29 19:memory:/docker/78e8dcc3c33b51eb023b56a791b2438026e75e3be431a3f6083786fe505cbd51
+2024-04-25 19:02:29 18:blkio:/docker/78e8dcc3c33b51eb023b56a791b2438026e75e3be431a3f6083786fe505cbd51
+2024-04-25 19:02:29 17:cpuacct:/docker/78e8dcc3c33b51eb023b56a791b2438026e75e3be431a3f6083786fe505cbd51
+2024-04-25 19:02:29 16:cpu:/docker/78e8dcc3c33b51eb023b56a791b2438026e75e3be431a3f6083786fe505cbd51
+2024-04-25 19:02:29 15:cpuset:/docker/78e8dcc3c33b51eb023b56a791b2438026e75e3be431a3f6083786fe505cbd51
+2024-04-25 19:02:29 0::/docker/78e8dcc3c33b51eb023b56a791b2438026e75e3be431a3f6083786fe505cbd51/memory.pressure not writable, functionality unavailable to MariaDB
+2024-04-25 19:02:29 2024-04-26 01:02:29+00:00 [ERROR] [Entrypoint]: Database is uninitialized and password option is not specified
+2024-04-25 19:02:29     You need to specify one of MARIADB_ROOT_PASSWORD, MARIADB_ROOT_PASSWORD_HASH, MARIADB_ALLOW_EMPTY_ROOT_PASSWORD and MARIADB_RANDOM_ROOT_PASSWORD
+2024-04-25 19:02:29 2024-04-26 01:02:29+00:00 [Note] [Entrypoint]: Entrypoint script for MariaDB Server 1:11.3.2+maria~ubu2204 started.
+2024-04-25 19:02:29 2024-04-26 01:02:29+00:00 [Note] [Entrypoint]: Switching to dedicated user 'mysql'
+2024-04-25 19:02:29 2024-04-26 01:02:29+00:00 [Note] [Entrypoint]: Entrypoint script for MariaDB Server 1:11.3.2+maria~ubu2204 started.
+
+
+nginx fails
+2024-04-25 19:02:35 /docker-entrypoint.sh: /docker-entrypoint.d/ is not empty, will attempt to perform configuration
+2024-04-25 19:02:35 /docker-entrypoint.sh: Looking for shell scripts in /docker-entrypoint.d/
+2024-04-25 19:02:35 /docker-entrypoint.sh: Launching /docker-entrypoint.d/10-listen-on-ipv6-by-default.sh
+2024-04-25 19:02:35 10-listen-on-ipv6-by-default.sh: info: Getting the checksum of /etc/nginx/conf.d/default.conf
+2024-04-25 19:02:35 10-listen-on-ipv6-by-default.sh: info: /etc/nginx/conf.d/default.conf differs from the packaged version
+2024-04-25 19:02:35 /docker-entrypoint.sh: Sourcing /docker-entrypoint.d/15-local-resolvers.envsh
+2024-04-25 19:02:35 /docker-entrypoint.sh: Launching /docker-entrypoint.d/20-envsubst-on-templates.sh
+2024-04-25 19:02:35 /docker-entrypoint.sh: Launching /docker-entrypoint.d/30-tune-worker-processes.sh
+2024-04-25 19:02:35 /docker-entrypoint.sh: Configuration complete; ready for start up
+2024-04-25 19:02:40 2024/04/26 01:02:35 [emerg] 1#1: host not found in upstream "node-service:3000" in /etc/nginx/conf.d/default.conf:3
+2024-04-25 19:02:40 nginx: [emerg] host not found in upstream "node-service:3000" in /etc/nginx/conf.d/default.conf:3
+
+Trying to replace mariadb with mysql, why does only the server use mariadb when the rest of the system attempts to use mysql
+
+mysql also has requirements
+2024-04-25 19:07:06 2024-04-26 01:07:06+00:00 [ERROR] [Entrypoint]: Database is uninitialized and password option is not specified
+2024-04-25 19:07:06     You need to specify one of the following as an environment variable:
+2024-04-25 19:07:06     - MYSQL_ROOT_PASSWORD
+2024-04-25 19:07:06     - MYSQL_ALLOW_EMPTY_PASSWORD
+2024-04-25 19:07:06     - MYSQL_RANDOM_ROOT_PASSWORD
+2024-04-25 19:07:06 2024-04-26 01:07:06+00:00 [Note] [Entrypoint]: Entrypoint script for MySQL Server 8.3.0-1.el8 started.
+2024-04-25 19:07:06 2024-04-26 01:07:06+00:00 [Note] [Entrypoint]: Switching to dedicated user 'mysql'
+2024-04-25 19:07:06 2024-04-26 01:07:06+00:00 [Note] [Entrypoint]: Entrypoint script for MySQL Server 8.3.0-1.el8 started.
